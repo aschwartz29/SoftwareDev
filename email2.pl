@@ -18,7 +18,7 @@ print MAIL "Hello";
 print MAIL "\
 \
 ";
-$attachment = 'tumblr_nklqqxxae01s1l2r7o2_1280.jpg';
+$attachment = 'imgres.jpg';
 open(FILE, "uuencode $attachment $attachment|");
 while( <FILE> ) { print MAIL; };
 close(FILE);
