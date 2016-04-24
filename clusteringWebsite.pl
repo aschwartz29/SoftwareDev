@@ -12,7 +12,7 @@ sub do_prompt {
     print <<END;
 <BODY BACKGROUND="star.gif">
 <H1>    Clustering</H1>
-INTRODUCTION TEXT GOES HERE
+Upload a data file to get a rough clustering of the data.  You can have the results emailed to you.
 END
     ;
 
@@ -35,7 +35,7 @@ END
     "<BR>",
 
     "Click here for a demo:<BR>",
-    $query->submit(-label=>'Demo'),
+    $query->submit(-name=>'demo', -value=> 'Demo'),
     $query->end_form;
 
 }
@@ -45,19 +45,39 @@ sub do_work {
 
    # Process the form if there is a file name entered
   if ($file = $query->param('filename')) {
+
     print "<H2>The data in $file will be clustered</H2>\n";
-    ###THIS IS WHERE WE WILL CALL THE CLUSTERING METHOD AND PASS THE DATA
+
+    ####
+    ##Should run Python script but not working!!
+    open (my $py, "|-", "cd ~Applications/XAMPP/cgi-bin/clusterMethod.py") or die "Python script returned error $!";
+    while (<$py>) {
+        print clusters;
+    }
+    close ($py);
+
+    ##DRAW IMAGE BUT DOESN"T WORK#######
+    # select(STDOUT); $| = 1;   #unbuffer STDOUT
+    # print "Content-type: image/png\n\n";
+
+     #open (IMAGE, '<', 'flowers.jpg');
+     #print <IMAGE>;
+     #close IMAGE;
+    #####
+
+    print "<img src=/image1.eps>";
   }
-  if ($file = $query->param('textentry')){
+  if ($email = $query->param('textentry')){
     print "<H2>The result will be sent to $file </H2>\n";
-    ###THIS IS WHERE WE WILL PROCESS THE EMAIL ADDRESS TO SEND SOLUTION TO
+    do `cd ~/Desktop/softwareDev/perl email.pl`;
+
   }
 
   ##IF DEMO SELECTED, GIVE RESULT OF CLUSTERING FOR SAMPLE DATA
-
+  if ($demoButton = $query->param('demo')){
+    print "<img src=/demo.jpeg width =500 height =500>";
+  }
 }
-
-
 
 
 sub print_tail {
